@@ -13,11 +13,22 @@ const ProfileParser = () => {
 
     for (let i = 0; i < lines.length; i++) {
       if (
-        (lines[i].includes('Message') || lines[i].includes('Connect')) &&
+        (lines[i].includes('Message') || lines[i].includes('Connect') || lines[i].includes('Follow')) &&
         !lines[i].includes('Connections')
       ) {
-        const fullNameIndex = lines[i].includes('Connect') ? i - 9 : i - 8;
-        const roleIndex = lines[i].includes('Connect') ? i - 6 : i - 5;
+        let fullNameIndex;
+        let roleIndex;
+
+        if (lines[i].includes('Connect') && lines[i - 2].includes('mutual connection')) {
+          fullNameIndex = i - 9;
+          roleIndex = i - 6;
+        } else if (lines[i].includes('Follow')) {
+          fullNameIndex = i - 9;
+          roleIndex = i - 6;
+        } else {
+          fullNameIndex = i - 8;
+          roleIndex = i - 5;
+        }
 
         if (lines[fullNameIndex]) {
           const fullName = lines[fullNameIndex].trim();
