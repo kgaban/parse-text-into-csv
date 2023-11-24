@@ -54,11 +54,7 @@ function FindAndOutput({ targetSubstring }) {
 
   return (
     <div>
-<<<<<<< HEAD
       <h1>Raw Text</h1>
-=======
-      <h1>Matching Rows</h1>
->>>>>>> 5de8a2e3d4cdbb14517deaba14e3593b03736ea1
       <textarea
         rows="5"
         cols="30"
