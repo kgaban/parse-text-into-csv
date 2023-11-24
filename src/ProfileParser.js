@@ -16,7 +16,7 @@ const ProfileParser = () => {
         (lines[i].includes('Message') || lines[i].includes('Connect')) &&
         !lines[i].includes('Connections')
       ) {
-        const fullNameIndex = i - 8;
+        const fullNameIndex = lines[i].includes('Connect') ? i - 9 : i - 8;
         const roleIndex = lines[i].includes('Connect') ? i - 6 : i - 5;
 
         if (lines[fullNameIndex]) {
