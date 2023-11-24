@@ -1,4 +1,5 @@
 # Parse Text into CSV
+**Disclaimer: This project is created for educational purposes and should be used responsibly.**
 
 This is a simple React application designed to parse raw text into CSV format. It utilizes React for the front-end and includes a component named `ProfileParser` for handling the parsing logic.
 
