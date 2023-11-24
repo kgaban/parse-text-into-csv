@@ -1,10 +1,10 @@
 import React from 'react';
-import NameParser from './NameParser';
+import ProfileParser from './ProfileParser';
 
 function App() {
   return (
     <div className="App">
-      <NameParser />
+      <ProfileParser />
     </div>
   );
 }
