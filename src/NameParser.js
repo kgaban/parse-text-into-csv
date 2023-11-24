@@ -15,21 +15,22 @@ function ParseFirstAndLastName({ fullName }) {
   return { status: 'FAIL' };
 }
 
-function FindAndOutput({ outputCsvFile, targetSubstring }) {
+function FindAndOutput({ targetSubstring }) {
   const [matchingRows, setMatchingRows] = useState([]);
   const [inputData, setInputData] = useState('');
+
   const handleInputChange = (event) => {
     setInputData(event.target.value);
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = () => {
       try {
         const lines = inputData.split('\n');
 
         const rows = lines
           .filter((line) => line.toLowerCase().includes(targetSubstring.toLowerCase()))
-          .map((line) => {
+          .map((line, index) => {
             const fullName = TruncateOnDelimiter({ inputString: line });
             const parsedName = ParseFirstAndLastName({ fullName });
 
@@ -37,7 +38,7 @@ function FindAndOutput({ outputCsvFile, targetSubstring }) {
               return null;
             }
 
-            return { First: parsedName.first, Last: parsedName.last };
+            return { id: index, First: parsedName.first, Last: parsedName.last };
           })
           .filter((row) => row !== null);
 
@@ -50,20 +51,10 @@ function FindAndOutput({ outputCsvFile, targetSubstring }) {
     fetchData();
   }, [inputData, targetSubstring]);
 
-  const handleDownload = () => {
-    const csvContent = matchingRows
-      .map((row) => `${row.Last},${row.First}`)
-      .join('\n');
-    const blob = new Blob([`Last,First\n${csvContent}`], { type: 'text/csv' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = outputCsvFile;
-    link.click();
-  };
 
   return (
     <div>
-      <h1>CSV Template Converter</h1>
+      <h1>Raw Text</h1>
       <textarea
         rows="5"
         cols="30"
@@ -72,7 +63,14 @@ function FindAndOutput({ outputCsvFile, targetSubstring }) {
         onChange={handleInputChange}
       ></textarea>
       <br />
-      <button onClick={handleDownload}>Download CSV</button>
+      {matchingRows.length > 0 ? (
+        <>
+          <h2>CSV Text</h2>
+          <pre>{matchingRows.map((row) => `${row.Last},${row.First}`).join('\n')}</pre>
+        </>
+      ) : (
+        <p>No matching rows found.</p>
+      )}
     </div>
   );
 }
@@ -80,10 +78,7 @@ function FindAndOutput({ outputCsvFile, targetSubstring }) {
 export default function App() {
   return (
     <div className="App">
-      <FindAndOutput
-        outputCsvFile="output.csv"
-        targetSubstring="s profile"
-      />
+      <FindAndOutput targetSubstring="s profile" />
     </div>
   );
 }
